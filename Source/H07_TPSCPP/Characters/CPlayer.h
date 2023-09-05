@@ -3,11 +3,12 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Components/CStateComponent.h"
+#include "GenericTeamAgentInterface.h"
 #include "ICharacter.h"
 #include "CPlayer.generated.h"
 
 UCLASS()
-class H07_TPSCPP_API ACPlayer : public ACharacter, public IICharacter
+class H07_TPSCPP_API ACPlayer : public ACharacter, public IICharacter, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
@@ -46,6 +47,7 @@ private: //Action Event
 
 public:
 	virtual void ChangeColor(FLinearColor InColor) override;
+	virtual FGenericTeamId GetGenericTeamId() const override;
 
 private: //Scene Component
 	UPROPERTY(VisibleDefaultsOnly)
@@ -81,6 +83,10 @@ private:
 public:
 	void End_Roll();
 	void End_BackStep();
+
+private:
+	UPROPERTY(EditDefaultsOnly, Category = "Team")
+		uint8 TeamID = 0;
 
 private:
 	class UMaterialInstanceDynamic* DynamicMaterial;

@@ -230,6 +230,11 @@ void ACPlayer::ChangeColor(FLinearColor InColor)
 	DynamicMaterial->SetVectorParameterValue("BodyColor", InColor);
 }
 
+FGenericTeamId ACPlayer::GetGenericTeamId() const
+{
+	return FGenericTeamId(TeamID);
+}
+
 void ACPlayer::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
 {
 	switch (InNewType)

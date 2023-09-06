@@ -22,6 +22,10 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
+	UFUNCTION()
+		void OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors);
+
+private:
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCBehaviorComponent* Behavior;
 

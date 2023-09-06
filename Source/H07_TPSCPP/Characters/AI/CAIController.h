@@ -25,12 +25,20 @@ private:
 	UFUNCTION()
 		void OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors);
 
+public:
+	float GetSightRadius();
+	FORCEINLINE float GetBehaviorRange() { return BehaviorRange; }
+
 private:
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCBehaviorComponent* Behavior;
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class UAIPerceptionComponent* Perception;
+
+private:
+	UPROPERTY(EditAnywhere)
+		float BehaviorRange = 150.f;
 
 private:
 	class ACEnemy_AI* OwnerEnemy;

@@ -79,3 +79,8 @@ void ACAIController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
 
 	Blackboard->SetValueAsObject("PlayerKey", player);
 }
+
+float ACAIController::GetSightRadius()
+{
+	return Sight->SightRadius;
+}

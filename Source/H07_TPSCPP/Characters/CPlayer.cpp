@@ -50,6 +50,7 @@ ACPlayer::ACPlayer()
 	SpringArm->TargetArmLength = 200;
 	SpringArm->bEnableCameraLag = true;
 	SpringArm->bUsePawnControlRotation = true;
+	SpringArm->bDoCollisionTest = false;
 
 	// -> Movement
 	bUseControllerRotationYaw = false;
@@ -145,12 +146,14 @@ void ACPlayer::OnZoom(float InAxis)
 
 void ACPlayer::OnRun()
 {
-	GetCharacterMovement()->MaxWalkSpeed = Status->GetRunSpeed();
+	//GetCharacterMovement()->MaxWalkSpeed = Status->GetRunSpeed();
+	Status->SetSpeed(EMoveSpeedType::Run);
 }
 
 void ACPlayer::OffRun()
 {
-	GetCharacterMovement()->MaxWalkSpeed = Status->GetWalkSpeed();
+	//GetCharacterMovement()->MaxWalkSpeed = Status->GetWalkSpeed();
+	Status->SetSpeed(EMoveSpeedType::Walk);
 }
 
 void ACPlayer::OnEvade()

@@ -30,8 +30,8 @@ void ACDoAction_MagicBall::DoAction()
 {
 	CheckFalse(Datas.Num() > 0);
 
-	CheckFalse(Aim->IsAvaliable());
-	CheckFalse(Aim->IsAiming());
+	if (Aim->IsAvaliable())
+		CheckFalse(Aim->IsAiming());
 
 	CheckFalse(StateComp->IsIdleMode());
 	StateComp->SetActionMode();
@@ -47,10 +47,12 @@ void ACDoAction_MagicBall::Begin_DoAction()
 	FVector location;
 	FRotator rotation;
 
+	//Todo. Interfaceȭ
 	OwnerCharacter->GetController()->GetPlayerViewPoint(location, rotation);
 	FVector direction = rotation.Vector();
 	FVector handSocketLocation = OwnerCharacter->GetMesh()->GetSocketLocation("hand_r");
 	location = location + direction * ((handSocketLocation - location) | direction);
+	//---
 
 	FTransform transform = Datas[0].EffectTransform;
 	transform.AddToTranslation(location);

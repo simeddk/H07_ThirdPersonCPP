@@ -25,7 +25,7 @@ void ACEquipment::Equip_Implementation()
 {
 	StateComp->SetEquipMode();
 
-	Data.bCanMove ? StatusComp->SetMove() : StatusComp->SetStop(); //Todo. 
+	Data.bCanMove ? StatusComp->SetMove() : StatusComp->SetStop();
 
 	if (!!Data.AnimMontage)
 		OwnerCharacter->PlayAnimMontage(Data.AnimMontage, Data.PlayRate, Data.StartSection);

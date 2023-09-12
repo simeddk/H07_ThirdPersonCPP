@@ -61,6 +61,12 @@ void ACAIController::OnUnPossess()
 void ACAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	CheckFalse(bDrawRange);
+
+	FVector center = OwnerEnemy->GetActorLocation();
+	DrawDebugCircle(GetWorld(), center, Sight->SightRadius, 64, FColor::Green, false, -1.f, 0, 2, FVector::RightVector, FVector::ForwardVector);
+	DrawDebugCircle(GetWorld(), center, BehaviorRange, 64, FColor::Red, false, -1.f, 0, 2, FVector::RightVector, FVector::ForwardVector);
 }
 
 void ACAIController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)

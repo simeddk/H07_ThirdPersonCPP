@@ -26,13 +26,18 @@ void ACDoAction_Warp::DoAction()
 	Super::DoAction();
 
 	CheckFalse(*bEquippedThis);
-
 	CheckFalse(StateComp->IsIdleMode());
 
-	FRotator rotation;
-	CheckFalse(GetCursorLocationAndRotation(Location, rotation));
-
-	Location.Z += OwnerCharacter->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() * 2.f;
+	//Player -> Decal의 위치로 이동
+	{
+		FRotator rotation;
+		CheckFalse(GetCursorLocationAndRotation(Location, rotation));
+		Location.Z += OwnerCharacter->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() * 2.f;
+	}
+	//Enemy -> EQS의 위치로 이동
+	{
+		//Todo. behaviorComp->SetLocationKey(from BB) -> Location = (Set)
+	}
 
 	StateComp->SetActionMode();
 	OwnerCharacter->PlayAnimMontage(Datas[0].AnimMontage, Datas[0].PlayRate, Datas[0].StartSection);

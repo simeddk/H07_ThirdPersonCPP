@@ -40,6 +40,9 @@ private:
 	UPROPERTY(EditAnywhere)
 		float BehaviorRange = 150.f;
 
+	UPROPERTY(EditAnywhere)
+		bool bDrawRange = true;
+
 private:
 	class ACEnemy_AI* OwnerEnemy;
 	class UAISenseConfig_Sight* Sight;

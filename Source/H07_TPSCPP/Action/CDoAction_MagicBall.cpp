@@ -47,12 +47,10 @@ void ACDoAction_MagicBall::Begin_DoAction()
 	FVector location;
 	FRotator rotation;
 
-	//Todo. Interfaceȭ
 	OwnerCharacter->GetController()->GetPlayerViewPoint(location, rotation);
 	FVector direction = rotation.Vector();
 	FVector handSocketLocation = OwnerCharacter->GetMesh()->GetSocketLocation("hand_r");
 	location = location + direction * ((handSocketLocation - location) | direction);
-	//---
 
 	FTransform transform = Datas[0].EffectTransform;
 	transform.AddToTranslation(location);
@@ -68,6 +66,7 @@ void ACDoAction_MagicBall::Begin_DoAction()
 		);
 	magicBall->OnMagicBallBeginOverlap.AddDynamic(this, &ACDoAction_MagicBall::OnMagicBallBeginOverlap);
 	magicBall->FinishSpawning(transform);
+
 }
 
 void ACDoAction_MagicBall::End_DoAction()

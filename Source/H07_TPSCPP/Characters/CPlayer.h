@@ -22,6 +22,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
 private: // Axis Event
 	void OnMoveForward(float InAxis);
 	void OnMoveRight(float InAxis);
@@ -48,6 +50,11 @@ private: //Action Event
 public:
 	virtual void ChangeColor(FLinearColor InColor) override;
 	virtual FGenericTeamId GetGenericTeamId() const override;
+
+private:
+	void Hitted();
+	void Dead();
+	void End_Dead();
 
 private: //Scene Component
 	UPROPERTY(VisibleDefaultsOnly)
@@ -90,4 +97,8 @@ private:
 
 private:
 	class UMaterialInstanceDynamic* DynamicMaterial;
+
+	float DamageValue;
+	class ACharacter* Attacker;
+	class AActor* Causer;
 };

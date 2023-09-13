@@ -1,10 +1,13 @@
 #include "CDoAction_Warp.h"
 #include "Global.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/GameModeBase.h"
 #include "Components/DecalComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/CStateComponent.h"
 #include "Components/CStatusComponent.h"
+#include "Components/CBehaviorComponent.h"
+#include "Characters/AI/CAIController.h"
 #include "CAttachment.h"
 
 void ACDoAction_Warp::BeginPlay()
@@ -28,20 +31,32 @@ void ACDoAction_Warp::DoAction()
 	CheckFalse(*bEquippedThis);
 	CheckFalse(StateComp->IsIdleMode());
 
-	//Player -> Decal의 위치로 이동
+	if (IsPlayerControlled())
 	{
 		FRotator rotation;
 		CheckFalse(GetCursorLocationAndRotation(Location, rotation));
-		Location.Z += OwnerCharacter->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() * 2.f;
 	}
-	//Enemy -> EQS의 위치로 이동
+	else
 	{
-		//Todo. behaviorComp->SetLocationKey(from BB) -> Location = (Set)
+		//Todo. AIcontroller->behaviorComp->SetLocationKey(from BB) -> Location = (Set)
+		ACAIController* aiController = OwnerCharacter->GetController<ACAIController>();
+		if (!!aiController)
+		{
+			UCBehaviorComponent* behaviorComp = CHelpers::GetComponent<UCBehaviorComponent>(aiController);
+			Location = behaviorComp->GetWarpLocation();
+		}
 	}
+
+	Location.Z += OwnerCharacter->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() * 2.f;
 
 	StateComp->SetActionMode();
 	OwnerCharacter->PlayAnimMontage(Datas[0].AnimMontage, Datas[0].PlayRate, Datas[0].StartSection);
 	Datas[0].bCanMove ? StatusComp->SetMove() : StatusComp->SetStop();
+}
+
+bool ACDoAction_Warp::IsPlayerControlled()
+{
+	return (OwnerCharacter->GetClass() == GetWorld()->GetAuthGameMode()->DefaultPawnClass);
 }
 
 void ACDoAction_Warp::Begin_DoAction()
@@ -69,6 +84,7 @@ void ACDoAction_Warp::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	CheckFalse(IsPlayerControlled());
 	CheckFalse(*bEquippedThis);
 
 	FVector cursorLocation;

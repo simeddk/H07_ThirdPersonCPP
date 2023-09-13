@@ -64,6 +64,10 @@ private:
 		class UCStateComponent* State;
 
 private:
+	UPROPERTY(EditAnywhere)
+		bool bVisibleNameWidget = true;
+
+private:
 	class ACharacter* Attacker;
 	float DamageValue;
 	class AActor* Causer;

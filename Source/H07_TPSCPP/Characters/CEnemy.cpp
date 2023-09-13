@@ -81,6 +81,8 @@ void ACEnemy::BeginPlay()
 	UCHealthWidget* healthWidgetObject = Cast<UCHealthWidget>(HealthWidget->GetUserWidgetObject());
 	if (!!healthWidgetObject)
 		healthWidgetObject->Update(Status->GetCurrentHealth(), Status->GetMaxHealth());
+
+	NameWidget->SetVisibility(bVisibleNameWidget);
 }
 
 float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -88,6 +90,8 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 	DamageValue = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
 	Attacker = Cast<ACharacter>(EventInstigator->GetPawn());
 	Causer = DamageCauser;
+
+	Action->AbortByDamaged();
 
 	Status->DecreaseHealth(DamageValue);
 
@@ -158,7 +162,10 @@ void ACEnemy::Dead()
 
 void ACEnemy::End_Dead()
 {
-	CLog::Print(GetActorLabel() + " Is Dead");
+	Action->End_Dead();
+	//DataAssets[7] <- DA_Unaremd, DA_Strom....... => Equipm, Atta, DoAc.....
+
+	Destroy();
 }
 
 void ACEnemy::ChangeColor(FLinearColor InColor)

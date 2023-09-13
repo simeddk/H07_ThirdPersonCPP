@@ -21,6 +21,7 @@ public:
 	virtual void End_DoAction()  override;
 
 private:
+	bool IsPlayerControlled();
 	bool GetCursorLocationAndRotation(FVector& OutLocation, FRotator& OutRotation);
 
 private:

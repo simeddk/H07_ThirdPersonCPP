@@ -65,6 +65,8 @@ public:
 	void DoAim(bool bAiming);
 
 	void Dead();
+	void End_Dead();
+	void AbortByDamaged();
 
 private:
 	void SetMode(EActionType InNewType);

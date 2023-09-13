@@ -31,6 +31,9 @@ void UCBTService_Melee::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	UCPatrolComponent* patrolComp = CHelpers::GetComponent<UCPatrolComponent>(enemy);
 	CheckNull(patrolComp);
 
+	//Already Dead
+	CheckTrue(stateComp->IsDeadMode());
+
 	//Hitted(Taken Damage)
 	if (stateComp->IsHittedMode())
 	{

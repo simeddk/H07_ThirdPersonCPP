@@ -37,6 +37,8 @@ public:
 	virtual void OnAim() {};
 	virtual void OffAim() {};
 
+	virtual void Abort() {};
+
 protected:
 	UPROPERTY(BlueprintReadOnly)
 		class ACharacter* OwnerCharacter;

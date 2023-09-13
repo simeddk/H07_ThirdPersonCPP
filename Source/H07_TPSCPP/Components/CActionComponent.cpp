@@ -98,6 +98,34 @@ void UCActionComponent::Dead()
 	OffAllCollisions();
 }
 
+void UCActionComponent::End_Dead()
+{
+	for (int32 i = 0; i < (int32)EActionType::Max; i++)
+	{
+		if (!!Datas[i] && !!Datas[i]->GetAttachment())
+			Datas[i]->GetAttachment()->Destroy();
+
+		if (!!Datas[i] && !!Datas[i]->GetEquipment())
+			Datas[i]->GetEquipment()->Destroy();
+
+		if (!!Datas[i] && !!Datas[i]->GetDoAction())
+			Datas[i]->GetDoAction()->Destroy();
+	}
+}
+
+void UCActionComponent::AbortByDamaged()
+{
+	CheckTrue(IsUnaremdMode());
+	CheckNull(Datas[(int)Type]);
+	CheckNull(Datas[(int)Type]->GetEquipment());
+
+	Datas[(int)Type]->GetEquipment()->Begin_Equip();
+	Datas[(int)Type]->GetEquipment()->End_Equip();
+
+	CheckNull(Datas[(int)Type]->GetDoAction());
+	Datas[(int)Type]->GetDoAction()->Abort();
+}
+
 void UCActionComponent::SetMode(EActionType InNewType)
 {
 	if (Type == InNewType)

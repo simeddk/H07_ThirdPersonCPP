@@ -102,6 +102,30 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+float ACPlayer::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	DamageValue = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+	Attacker = Cast<ACharacter>(EventInstigator->GetPawn());
+	Causer = DamageCauser;
+
+	Action->AbortByDamaged();
+
+	Status->DecreaseHealth(DamageValue);
+
+	//Dead
+	if (Status->GetCurrentHealth() <= 0)
+	{
+		State->SetDeadMode();
+
+		return DamageValue;
+	}
+
+	//Hitted
+	State->SetHittedMode();
+
+	return DamageValue;
+}
+
 void ACPlayer::OnMoveForward(float InAxis)
 {
 	CheckTrue(FMath::IsNearlyZero(InAxis));
@@ -238,12 +262,46 @@ FGenericTeamId ACPlayer::GetGenericTeamId() const
 	return FGenericTeamId(TeamID);
 }
 
+void ACPlayer::Hitted()
+{
+	////Adjust HeathWidget
+	//UCHealthWidget* healthWidgetObject = Cast<UCHealthWidget>(HealthWidget->GetUserWidgetObject());
+	//if (!!healthWidgetObject)
+	//	healthWidgetObject->Update(Status->GetCurrentHealth(), Status->GetMaxHealth());
+
+	////Play Hitted Montage
+	//Montage->PlayHitted();
+
+	////Look At Attacker
+	//FVector start = GetActorLocation();
+	//FVector target = Attacker->GetActorLocation();
+	//SetActorRotation(UKismetMathLibrary::FindLookAtRotation(start, target));
+
+	////Hit Back
+	//FVector direction = (start - target).GetSafeNormal();
+	//LaunchCharacter(direction * LaunchValue * DamageValue, true, false);
+
+	////Change Hitted Color
+	//ChangeColor(FLinearColor::Red);
+	//UKismetSystemLibrary::K2_SetTimer(this, "RestoreColor", 0.2f, false);
+}
+
+void ACPlayer::Dead()
+{
+}
+
+void ACPlayer::End_Dead()
+{
+}
+
 void ACPlayer::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
 {
 	switch (InNewType)
 	{
 		case EStateType::Roll:		Begin_Roll();		break;
 		case EStateType::BackStep:	Begin_BackStep();	break;
+		case EStateType::Hitted:	Hitted();			break;
+		case EStateType::Dead:		Dead();				break;
 	}
 }
 

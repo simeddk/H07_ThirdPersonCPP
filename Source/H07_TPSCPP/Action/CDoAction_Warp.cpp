@@ -38,7 +38,6 @@ void ACDoAction_Warp::DoAction()
 	}
 	else
 	{
-		//Todo. AIcontroller->behaviorComp->SetLocationKey(from BB) -> Location = (Set)
 		ACAIController* aiController = OwnerCharacter->GetController<ACAIController>();
 		if (!!aiController)
 		{

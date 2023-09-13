@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CStatusComponent.h"
 #include "Components/COptionComponent.h"
@@ -264,34 +265,31 @@ FGenericTeamId ACPlayer::GetGenericTeamId() const
 
 void ACPlayer::Hitted()
 {
-	////Adjust HeathWidget
-	//UCHealthWidget* healthWidgetObject = Cast<UCHealthWidget>(HealthWidget->GetUserWidgetObject());
-	//if (!!healthWidgetObject)
-	//	healthWidgetObject->Update(Status->GetCurrentHealth(), Status->GetMaxHealth());
-
-	////Play Hitted Montage
-	//Montage->PlayHitted();
-
-	////Look At Attacker
-	//FVector start = GetActorLocation();
-	//FVector target = Attacker->GetActorLocation();
-	//SetActorRotation(UKismetMathLibrary::FindLookAtRotation(start, target));
-
-	////Hit Back
-	//FVector direction = (start - target).GetSafeNormal();
-	//LaunchCharacter(direction * LaunchValue * DamageValue, true, false);
-
-	////Change Hitted Color
-	//ChangeColor(FLinearColor::Red);
-	//UKismetSystemLibrary::K2_SetTimer(this, "RestoreColor", 0.2f, false);
+	Montage->PlayHitted();
 }
 
 void ACPlayer::Dead()
 {
+	//Disable Input
+	APlayerController* controller = GetController<APlayerController>();
+	DisableInput(controller);
+
+	//All Attachment Collision Disable
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Action->Dead();
+
+	//Play Dead Montage
+	Montage->PlayDead();
+
+	//Destroy All
+	UKismetSystemLibrary::K2_SetTimer(this, "End_Dead", 5.f, false);
 }
 
 void ACPlayer::End_Dead()
 {
+	Action->End_Dead();
+
+	CLog::Print("Player is dead");
 }
 
 void ACPlayer::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)

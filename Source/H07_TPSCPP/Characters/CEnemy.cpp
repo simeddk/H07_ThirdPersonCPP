@@ -163,7 +163,6 @@ void ACEnemy::Dead()
 void ACEnemy::End_Dead()
 {
 	Action->End_Dead();
-	//DataAssets[7] <- DA_Unaremd, DA_Strom....... => Equipm, Atta, DoAc.....
 
 	Destroy();
 }

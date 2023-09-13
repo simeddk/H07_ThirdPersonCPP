@@ -57,6 +57,20 @@ void UCBTService_Melee::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 		return;
 	}
 
+	// -> Is Player State Dead
+	UCStateComponent* playerStateComp = CHelpers::GetComponent<UCStateComponent>(player);
+	if (playerStateComp->IsDeadMode())
+	{
+		if (patrolComp->IsPathValid())
+		{
+			behaviorComp->SetPatrolMode();
+			return;
+		}
+
+		behaviorComp->SetWaitMode();
+		return;
+	}
+
 	//Perceived Player & Get Distance
 	float distance = enemy->GetDistanceTo(player);
 

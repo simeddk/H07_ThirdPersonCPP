@@ -54,7 +54,9 @@ public:
 private:
 	void Hitted();
 	void Dead();
-	void End_Dead();
+
+	UFUNCTION()
+		void End_Dead();
 
 private: //Scene Component
 	UPROPERTY(VisibleDefaultsOnly)
@@ -94,6 +96,9 @@ public:
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Team")
 		uint8 TeamID = 0;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+		float LaunchValue;
 
 private:
 	class UMaterialInstanceDynamic* DynamicMaterial;

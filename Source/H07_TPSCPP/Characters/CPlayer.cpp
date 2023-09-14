@@ -10,6 +10,7 @@
 #include "Components/CActionComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Action/CActionData.h"
+#include "Widgets/CSelectActionWidget.h"
 
 ACPlayer::ACPlayer()
 {
@@ -58,16 +59,28 @@ ACPlayer::ACPlayer()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->MaxWalkSpeed = Status->GetRunSpeed();
 	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
+
+	//------------------------------------------------------------------
+	//Widget
+	//------------------------------------------------------------------
+	CHelpers::GetClass<UCSelectActionWidget>(&SelectActionWidgetClass, "/Game/Widgets/WB_SelectAction");
 }
 
 void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	//Create Dynamic Material
 	DynamicMaterial = UMaterialInstanceDynamic::Create(GetMesh()->GetMaterial(0), nullptr);
 	GetMesh()->SetMaterial(0, DynamicMaterial);
 
+	//State Type Changed Event
 	State->OnStateTypeChanged.AddDynamic(this, &ACPlayer::OnStateTypeChanged);
+
+	//Create Select Action Widget
+	SelectActionWidget = CreateWidget<UCSelectActionWidget>(GetController<APlayerController>(), SelectActionWidgetClass);
+	CheckNull(SelectActionWidget);
+	SelectActionWidget->AddToViewport();
 }
 
 void ACPlayer::Tick(float DeltaTime)
@@ -289,6 +302,10 @@ void ACPlayer::End_Dead()
 {
 	Action->End_Dead();
 
+	//Todo. 플레이어 사망 후 뭘 한건지???
+	// -> 게임 종료
+	// -> 리트라이 위젯
+	// -> 나를 죽인 적의 시점으로 바라보기
 	CLog::Print("Player is dead");
 }
 

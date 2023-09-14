@@ -51,6 +51,8 @@ public:
 	virtual void ChangeColor(FLinearColor InColor) override;
 	virtual FGenericTeamId GetGenericTeamId() const override;
 
+	FORCEINLINE class UCSelectActionWidget* GetSelectActionWidget() { return SelectActionWidget; }
+
 private:
 	void Hitted();
 	void Dead();
@@ -97,8 +99,12 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Team")
 		uint8 TeamID = 0;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Damage")
-		float LaunchValue;
+	UPROPERTY(EditDefaultsOnly, Category = "Widget")
+		TSubclassOf<class UCSelectActionWidget> SelectActionWidgetClass;
+
+protected:
+	UPROPERTY(BlueprintReadOnly, Category = "Widget")
+		class UCSelectActionWidget* SelectActionWidget;
 
 private:
 	class UMaterialInstanceDynamic* DynamicMaterial;

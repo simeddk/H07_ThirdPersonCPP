@@ -4,6 +4,8 @@
 #include "Blueprint/UserWidget.h"
 #include "CActionItemWidget.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FImageButtonPressedSignature);
+
 UCLASS()
 class H07_TPSCPP_API UCActionItemWidget : public UUserWidget
 {
@@ -22,11 +24,18 @@ protected:
 	UFUNCTION(BlueprintCallable)
 		void OnUnhover();
 
+public:
+	void SetImageButton(class UTexture2D* InImage);
+
 private:
 	class UCSelectActionWidget* GetParentWidget();
+
+public:
+	UPROPERTY(BlueprintAssignable)
+		FImageButtonPressedSignature OnImageButtonPressed;
 
 private:
 	UPROPERTY(meta = (BindWidget))
 		class UButton* ImageButton;
-	
+
 };

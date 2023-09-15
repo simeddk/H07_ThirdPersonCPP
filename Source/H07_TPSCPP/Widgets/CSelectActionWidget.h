@@ -13,6 +13,8 @@ protected:
 	virtual void NativeConstruct() override;
 
 public:
+	FORCEINLINE class UCActionItemWidget* GetItem(FString InName) { return Items[InName]; }
+
 	UFUNCTION(BlueprintCallable)
 		void Pressed(FString InName);
 
@@ -29,4 +31,7 @@ private:
 protected:
 	UPROPERTY(BlueprintReadOnly)
 		TMap<FString, class UCActionItemWidget*> Items;
+
+	UPROPERTY(BlueprintReadWrite)
+		TArray<class UTexture2D*> Images;
 };

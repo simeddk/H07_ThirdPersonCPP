@@ -36,16 +36,19 @@ private: //Action Event
 	void OffRun();
 	void OnEvade();
 
-	void OnFist();
-	void OnOneHand();
-	void OnTwoHand();
-	void OnMagicBall();
-	void OnWarp();
-	void OnStorm();
+	UFUNCTION() void OnFist();
+	UFUNCTION() void OnOneHand();
+	UFUNCTION() void OnTwoHand();
+	UFUNCTION() void OnMagicBall();
+	UFUNCTION() void OnWarp();
+	UFUNCTION() void OnStorm();
 
 	void OnAction();
 	void OnAim();
 	void OffAim();
+
+	void OnSelectAction();
+	void OffSelectAction();
 
 public:
 	virtual void ChangeColor(FLinearColor InColor) override;

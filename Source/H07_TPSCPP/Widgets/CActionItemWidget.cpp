@@ -33,6 +33,14 @@ void UCActionItemWidget::OnUnhover()
 	GetParentWidget()->Unhover(GetName());
 }
 
+void UCActionItemWidget::SetImageButton(UTexture2D* InImage)
+{
+	CheckNull(ImageButton);
+	ImageButton->WidgetStyle.Normal.SetResourceObject(InImage);
+	ImageButton->WidgetStyle.Hovered.SetResourceObject(InImage);
+	ImageButton->WidgetStyle.Pressed.SetResourceObject(InImage);
+}
+
 UCSelectActionWidget* UCActionItemWidget::GetParentWidget()
 {
 	ACPlayer* player = Cast<ACPlayer>(GetOwningPlayer()->GetPawn());

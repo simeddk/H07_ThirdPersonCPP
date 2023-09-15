@@ -11,6 +11,7 @@
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Action/CActionData.h"
 #include "Widgets/CSelectActionWidget.h"
+#include "Widgets/CActionItemWidget.h"
 
 ACPlayer::ACPlayer()
 {
@@ -81,6 +82,15 @@ void ACPlayer::BeginPlay()
 	SelectActionWidget = CreateWidget<UCSelectActionWidget>(GetController<APlayerController>(), SelectActionWidgetClass);
 	CheckNull(SelectActionWidget);
 	SelectActionWidget->AddToViewport();
+	SelectActionWidget->SetVisibility(ESlateVisibility::Hidden);
+
+	//Bind Event to Select Action Widget
+	SelectActionWidget->GetItem("Item1")->OnImageButtonPressed.AddDynamic(this, &ACPlayer::OnFist);
+	SelectActionWidget->GetItem("Item2")->OnImageButtonPressed.AddDynamic(this, &ACPlayer::OnOneHand);
+	SelectActionWidget->GetItem("Item3")->OnImageButtonPressed.AddDynamic(this, &ACPlayer::OnTwoHand);
+	SelectActionWidget->GetItem("Item4")->OnImageButtonPressed.AddDynamic(this, &ACPlayer::OnMagicBall);
+	SelectActionWidget->GetItem("Item5")->OnImageButtonPressed.AddDynamic(this, &ACPlayer::OnWarp);
+	SelectActionWidget->GetItem("Item6")->OnImageButtonPressed.AddDynamic(this, &ACPlayer::OnStorm);
 }
 
 void ACPlayer::Tick(float DeltaTime)
@@ -113,6 +123,8 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Action", EInputEvent::IE_Pressed, this, &ACPlayer::OnAction);
 	PlayerInputComponent->BindAction("Aim", EInputEvent::IE_Pressed, this, &ACPlayer::OnAim);
 	PlayerInputComponent->BindAction("Aim", EInputEvent::IE_Released, this, &ACPlayer::OffAim);
+	PlayerInputComponent->BindAction("SelectAction", EInputEvent::IE_Pressed, this, &ACPlayer::OnSelectAction);
+	PlayerInputComponent->BindAction("SelectAction", EInputEvent::IE_Released, this, &ACPlayer::OffSelectAction);
 
 }
 
@@ -264,6 +276,34 @@ void ACPlayer::OnAim()
 void ACPlayer::OffAim()
 {
 	Action->DoAim(false);
+}
+
+void ACPlayer::OnSelectAction()
+{
+	CheckFalse(State->IsIdleMode());
+
+	SelectActionWidget->SetVisibility(ESlateVisibility::Visible);
+
+	APlayerController* controller = GetController<APlayerController>();
+	CheckNull(controller);
+
+	controller->bShowMouseCursor = true;
+	controller->SetInputMode(FInputModeGameAndUI());
+
+	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 0.1f);
+}
+
+void ACPlayer::OffSelectAction()
+{
+	SelectActionWidget->SetVisibility(ESlateVisibility::Hidden);
+
+	APlayerController* controller = GetController<APlayerController>();
+	CheckNull(controller);
+
+	controller->bShowMouseCursor = false;
+	controller->SetInputMode(FInputModeGameOnly());
+
+	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 1.f);
 }
 
 void ACPlayer::ChangeColor(FLinearColor InColor)

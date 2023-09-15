@@ -12,6 +12,7 @@ public class H07_TPSCPP : ModuleRules
 		PublicDependencyModuleNames.Add("InputCore");
 		PublicDependencyModuleNames.Add("AIModule");
 		PublicDependencyModuleNames.Add("GameplayTasks");
+		PublicDependencyModuleNames.Add("SlateCore");
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

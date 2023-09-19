@@ -21,6 +21,17 @@ public:
 	virtual void End_DoAction() override;
 
 	virtual void Abort() override;
+
+private:
+	virtual void OnAttachmentBeginOverlap(class ACharacter* InAttacker, class AActor* InCauser, class ACharacter* InOtherCharacter) override;
+	virtual void OnAttachmentEndOverlap(class ACharacter* InAttacker, class AActor* InCauser, class ACharacter* InOtherCharacter) override;
+
+private:
+	UFUNCTION()
+		void DamageTo();
+
+	UFUNCTION()
+		void Finish();
 	
 private:
 	UPROPERTY(EditDefaultsOnly)
@@ -43,6 +54,6 @@ private:
 
 	TArray<class ACharacter*> HittedCharacters;
 
-	bool bAcivating;
+	bool bActivating;
 	float CurrentYaw;
 };

@@ -91,6 +91,10 @@ void ACPlayer::BeginPlay()
 	SelectActionWidget->GetItem("Item4")->OnImageButtonPressed.AddDynamic(this, &ACPlayer::OnMagicBall);
 	SelectActionWidget->GetItem("Item5")->OnImageButtonPressed.AddDynamic(this, &ACPlayer::OnWarp);
 	SelectActionWidget->GetItem("Item6")->OnImageButtonPressed.AddDynamic(this, &ACPlayer::OnStorm);
+
+	//Capsule Collision Event
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ACPlayer::OnCapsuleBeginOverlap);
+	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &ACPlayer::OnCapsuleEndOverlap);
 }
 
 void ACPlayer::Tick(float DeltaTime)
@@ -125,6 +129,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Aim", EInputEvent::IE_Released, this, &ACPlayer::OffAim);
 	PlayerInputComponent->BindAction("SelectAction", EInputEvent::IE_Pressed, this, &ACPlayer::OnSelectAction);
 	PlayerInputComponent->BindAction("SelectAction", EInputEvent::IE_Released, this, &ACPlayer::OffSelectAction);
+	PlayerInputComponent->BindAction("Interact", EInputEvent::IE_Pressed, this, &ACPlayer::OnInteract);
 
 }
 
@@ -218,6 +223,13 @@ void ACPlayer::OnEvade()
 	}
 
 	State->SetRollMode();
+}
+
+void ACPlayer::OnInteract()
+{
+	CheckNull(InteractableActor);
+
+	InteractableActor->Interact(this);
 }
 
 void ACPlayer::OnFist()
@@ -346,6 +358,21 @@ void ACPlayer::End_Dead()
 	// -> 리트라이 위젯
 	// -> 나를 죽인 적의 시점으로 바라보기
 	CLog::Print("Player is dead");
+}
+
+void ACPlayer::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	CheckTrue(OtherActor == this);
+
+	InteractableActor = Cast<IIInteractable>(OtherActor);
+}
+
+void ACPlayer::OnCapsuleEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	CheckTrue(OtherActor == this);
+
+	if (!!InteractableActor)
+		InteractableActor = nullptr;
 }
 
 void ACPlayer::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)

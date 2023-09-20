@@ -4,6 +4,7 @@
 #include "GameFramework/Character.h"
 #include "Components/CStateComponent.h"
 #include "GenericTeamAgentInterface.h"
+#include "Doors/IInteractable.h"
 #include "ICharacter.h"
 #include "CPlayer.generated.h"
 
@@ -35,6 +36,7 @@ private: //Action Event
 	void OnRun();
 	void OffRun();
 	void OnEvade();
+	void OnInteract();
 
 	UFUNCTION() void OnFist();
 	UFUNCTION() void OnOneHand();
@@ -62,6 +64,13 @@ private:
 
 	UFUNCTION()
 		void End_Dead();
+
+private:
+	UFUNCTION()
+		void OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+		void OnCapsuleEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 private: //Scene Component
 	UPROPERTY(VisibleDefaultsOnly)
@@ -115,4 +124,6 @@ private:
 	float DamageValue;
 	class ACharacter* Attacker;
 	class AActor* Causer;
+
+	IIInteractable* InteractableActor;
 };

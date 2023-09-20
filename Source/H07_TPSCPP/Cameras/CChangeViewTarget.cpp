@@ -11,8 +11,7 @@ void ACChangeViewTarget::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	
-	UKismetSystemLibrary::K2_SetTimer(this, "ChangeCamera", 2.f, true);
+	UKismetSystemLibrary::K2_SetTimer(this, "ChangeCamera", 5.f, true);
 }
 
 void ACChangeViewTarget::ChangeCamera()
@@ -31,7 +30,7 @@ void ACChangeViewTarget::ChangeCamera()
 	APlayerController* controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	if (!!controller)
 	{
-		controller->SetViewTargetWithBlend(Cameras[Index], 2.f, EViewTargetBlendFunction::VTBlend_EaseIn, 2.f);
+		controller->SetViewTargetWithBlend(Cameras[Index], 2.5f, EViewTargetBlendFunction::VTBlend_EaseIn, 5.f);
 		Index++;
 
 		Index %= Cameras.Num();

@@ -33,7 +33,7 @@ void ACAutoDoor::BeginPlay()
 	OnActorBeginOverlap.AddDynamic(this, &ACAutoDoor::BeginOverlap);
 	OnActorEndOverlap.AddDynamic(this, &ACAutoDoor::EndOverlap);
 
-	Box->SetHiddenInGame(bHiddenInGame); //Todo. 
+	Box->SetHiddenInGame(bHiddenInGame);
 }
 
 void ACAutoDoor::Tick(float DeltaTime)

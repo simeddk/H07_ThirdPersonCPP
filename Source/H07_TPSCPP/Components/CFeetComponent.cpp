@@ -28,6 +28,13 @@ void UCFeetComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 
 	float rightDistance;
 	Trace(RightFootName, rightDistance);
+
+	float offset = FMath::Min(leftDistance, rightDistance);
+
+	Data.PelvisDistance.Z = UKismetMathLibrary::FInterpTo(Data.PelvisDistance.Z, offset, DeltaTime, InterpSpeed);
+
+	Data.LeftDistance.Y = UKismetMathLibrary::FInterpTo(Data.LeftDistance.Y, leftDistance - offset, DeltaTime, InterpSpeed);
+	Data.RightDistance.Y = UKismetMathLibrary::FInterpTo(Data.RightDistance.Y, rightDistance - offset, DeltaTime, InterpSpeed);
 }
 
 void UCFeetComponent::Trace(FName InSocket, float& OutDistance)
@@ -59,7 +66,8 @@ void UCFeetComponent::Trace(FName InSocket, float& OutDistance)
 
 	CheckFalse(hitResult.IsValidBlockingHit());
 
-	OutDistance = 100.f;
-	//Todo. 이 컴포넌트를 플레이어에게 붙여줘야 함...
+	float underGroundLength = (hitResult.ImpactPoint - hitResult.TraceEnd).Size();
+	
+	OutDistance = Correction + underGroundLength - Additional;
 }
 

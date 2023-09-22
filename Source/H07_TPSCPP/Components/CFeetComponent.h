@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "CFeetComponent.generated.h"
 
 USTRUCT(BlueprintType)
@@ -42,7 +43,7 @@ public:
 
 
 public:
-	FORCEINLINE const FFeetData& GetDatas() { return Data; }
+	FORCEINLINE const FFeetData& GetData() { return Data; }
 
 private:
 	void Trace(FName InSocket, float& OutDistance);
@@ -56,8 +57,13 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "IK")
 		float Additional = 55.f;
+	
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "IK")
+		float Correction = 5.f;
 
-	//Todo. 헤더파일 있어야 하는듯...
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "IK")
+		float InterpSpeed = 5.f;
+
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "IK")
 		TEnumAsByte<EDrawDebugTrace::Type> DrawDebugType = EDrawDebugTrace::ForOneFrame;
 

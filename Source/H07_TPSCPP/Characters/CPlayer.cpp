@@ -8,6 +8,7 @@
 #include "Components/COptionComponent.h"
 #include "Components/CMontageComponent.h"
 #include "Components/CActionComponent.h"
+#include "Components/CFeetComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Action/CActionData.h"
 #include "Widgets/CSelectActionWidget.h"
@@ -31,6 +32,7 @@ ACPlayer::ACPlayer()
 	CHelpers::CreateActorComponent(this, &Status, "Status");
 	CHelpers::CreateActorComponent(this, &Option, "Option");
 	CHelpers::CreateActorComponent(this, &State, "State");
+	CHelpers::CreateActorComponent(this, &Feet, "Feet");
 
 	//------------------------------------------------------------------
 	//Component Settings

@@ -31,4 +31,8 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 		FFeetData Data;
+	
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+		bool bIKMode;
+
 };

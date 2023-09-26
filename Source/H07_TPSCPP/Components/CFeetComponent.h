@@ -44,9 +44,13 @@ public:
 
 public:
 	FORCEINLINE const FFeetData& GetData() { return Data; }
+	FORCEINLINE bool IsIKMode() { return bIKMode; }
 
 private:
-	void Trace(FName InSocket, float& OutDistance);
+	void Trace(FName InSocket, float& OutDistance, FRotator& OutRotation);
+
+	UFUNCTION() void ActiveIK(AActor* OverlappedActor, AActor* OtherActor);
+	UFUNCTION() void DeactiveIK(AActor* OverlappedActor, AActor* OtherActor);
 
 protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "IK")
@@ -72,4 +76,6 @@ private:
 
 	class ACharacter* OwnerCharacter;
 	float CapsuleHalfHeight;
+
+	bool bIKMode;
 };

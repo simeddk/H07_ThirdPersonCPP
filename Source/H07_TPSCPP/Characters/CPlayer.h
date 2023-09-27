@@ -117,9 +117,15 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Widget")
 		TSubclassOf<class UCSelectActionWidget> SelectActionWidgetClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Widget")
+		TSubclassOf<class UCHealthWidget_Player> HealthWidgetClass;
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Widget")
 		class UCSelectActionWidget* SelectActionWidget;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Widget")
+		class UCHealthWidget_Player* HealthWidget;
 
 private:
 	class UMaterialInstanceDynamic* DynamicMaterial;

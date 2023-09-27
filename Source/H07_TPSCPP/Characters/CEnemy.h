@@ -65,7 +65,7 @@ private:
 
 private:
 	UPROPERTY(EditAnywhere)
-		bool bVisibleNameWidget = true;
+		bool bVisibleNameWidget = false;
 
 private:
 	class ACharacter* Attacker;

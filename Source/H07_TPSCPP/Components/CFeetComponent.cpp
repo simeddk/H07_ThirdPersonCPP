@@ -95,16 +95,17 @@ void UCFeetComponent::Trace(FName InSocket, float& OutDistance, FRotator& OutRot
 	roll = FMath::Clamp(roll, -30.f, 30.f);
 	OutRotation = FRotator(pitch, 0.f, roll);
 	
-	DrawDebugLine
+	DrawDebugDirectionalArrow
 	(
 		GetWorld(),
 		hitResult.ImpactPoint,
 		hitResult.ImpactPoint + hitResult.ImpactNormal * 100.f,
+		3.f,
 		FColor::Purple,
 		false,
 		-1,
 		0,
-		2.f
+		1.f
 	);
 }
 

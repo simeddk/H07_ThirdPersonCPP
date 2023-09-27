@@ -13,6 +13,7 @@
 #include "Action/CActionData.h"
 #include "Widgets/CSelectActionWidget.h"
 #include "Widgets/CActionItemWidget.h"
+#include "Widgets/CHealthWidget_Player.h"
 
 ACPlayer::ACPlayer()
 {
@@ -67,6 +68,7 @@ ACPlayer::ACPlayer()
 	//Widget
 	//------------------------------------------------------------------
 	CHelpers::GetClass<UCSelectActionWidget>(&SelectActionWidgetClass, "/Game/Widgets/WB_SelectAction");
+	CHelpers::GetClass<UCHealthWidget_Player>(&HealthWidgetClass, "/Game/Widgets/WB_Health_Player");
 }
 
 void ACPlayer::BeginPlay()
@@ -97,6 +99,11 @@ void ACPlayer::BeginPlay()
 	//Capsule Collision Event
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ACPlayer::OnCapsuleBeginOverlap);
 	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &ACPlayer::OnCapsuleEndOverlap);
+
+	//Create Health Widget
+	HealthWidget = CreateWidget<UCHealthWidget_Player>(GetController<APlayerController>(), HealthWidgetClass);
+	CheckNull(HealthWidget);
+	HealthWidget->AddToViewport();
 }
 
 void ACPlayer::Tick(float DeltaTime)
@@ -144,6 +151,7 @@ float ACPlayer::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContr
 	Action->AbortByDamaged();
 
 	Status->DecreaseHealth(DamageValue);
+	HealthWidget->Update(Status->GetCurrentHealth(), Status->GetMaxHealth());
 
 	//Dead
 	if (Status->GetCurrentHealth() <= 0)
@@ -355,11 +363,9 @@ void ACPlayer::End_Dead()
 {
 	Action->End_Dead();
 
-	//Todo. 플레이어 사망 후 뭘 한건지???
-	// -> 게임 종료
-	// -> 리트라이 위젯
-	// -> 나를 죽인 적의 시점으로 바라보기
-	CLog::Print("Player is dead");
+	CLog::Print("Game Over", -1, 5.f, FColor::Red);
+
+	GetController<APlayerController>()->ConsoleCommand("RestartLevel");
 }
 
 void ACPlayer::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

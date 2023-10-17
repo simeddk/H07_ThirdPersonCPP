@@ -43,11 +43,15 @@ void UCFeetComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	Trace(RightFootName, rightDistance, rightRotation);
 
 	float offset = FMath::Min(leftDistance, rightDistance);
-
 	Data.PelvisDistance.Z = UKismetMathLibrary::FInterpTo(Data.PelvisDistance.Z, offset, DeltaTime, InterpSpeed);
+
+	
 
 	Data.LeftDistance.Y = UKismetMathLibrary::FInterpTo(Data.LeftDistance.Y, leftDistance - offset, DeltaTime, InterpSpeed);
 	Data.RightDistance.Y = UKismetMathLibrary::FInterpTo(Data.RightDistance.Y, rightDistance - offset, DeltaTime, InterpSpeed);
+
+	CLog::Print("Data.LeftDistance.Y : " + FString::SanitizeFloat(Data.LeftDistance.Y), 1);
+	CLog::Print("Data.RightDistance.Y : " + FString::SanitizeFloat(Data.RightDistance.Y), 2);
 
 	Data.LeftRotation = UKismetMathLibrary::RInterpTo(Data.LeftRotation, leftRotation, DeltaTime, InterpSpeed);
 	Data.RightRotation = UKismetMathLibrary::RInterpTo(Data.RightRotation, rightRotation, DeltaTime, InterpSpeed);;
